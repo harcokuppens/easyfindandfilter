@@ -1,0 +1,18 @@
+#!/usr/bin/env bash
+
+script_dir=$(dirname $0)
+source "$script_dir/lib/lib.bash" || exit 1
+
+
+# display filepaths prepended with time
+prepend_datetime() {
+
+    if [[ -t 0 ]]; then
+        printf "ERROR: filepaths must be piped in, one filepath per line! \n" 1>&2
+        return 1
+    fi
+    nl2null | xargs -0 -P0   -I @ date -r "@" +"%Y-%m-%d %H:%M:%S @" 2>/dev/null
+
+}  
+
+prepend_datetime "$@"

@@ -1,0 +1,80 @@
+#!/usr/bin/env bash
+
+script_dir=$(dirname $0)
+source "$script_dir/lib/lib.bash" || exit 1
+
+
+# replace 
+rw() {
+    local quiet="false"
+    if [[ "$1" == "-y" ]]
+    then
+       quiet="true"
+       shift 
+    fi 
+
+    local args=("$@")    
+    local numargs=${#args[@]}
+
+    if  [[  $(has_help_option args) == "true"  ]]
+    then
+        printf "USAGE:\n    rw [-h|--help] [-y] MATCH REPLACEMENT\n" 1>&2
+        printf "DESCRIPTION:\n    In each file replace each word MATCH with word REPLACEMENT.\n    Filepaths are read from stdin, where each line specifies a filepath.\n" 1>&2
+        printf "OPTIONS:\n" 1>&2
+        printf "    -y : yes mode; does replace without asking confirmation\n" 1>&2
+        printf "    -h : print this help info\n" 1>&2
+        exit 0    
+    fi
+    
+    if [[ -t 0 ]]; then
+        printf "ERROR: 'rw' needs filepaths piped in, one filepath per line! \n" 1>&2
+        printf "USAGE:  rw [-h|--help] [-y] MATCH REPLACEMENT\n" 1>&2
+        exit 1
+    fi
+
+    if [[   "$numargs" -ne "2" ]]; then
+        printf "ERROR: 'rw' needs 2 arguments\n" 1>&2
+        printf "USAGE:  rw [-h|--help] [-y] MATCH REPLACEMENT\n" 1>&2
+        exit 1
+    fi
+    
+
+    local match="${args[0]}" 
+    local replacement="${args[1]}"
+
+    local files=()
+    read_stdin_into_array files
+    
+    local matchingfiles=()
+    for inputfile in "${files[@]}"; do
+       if grep -q -F -- "$match" "$inputfile"
+       then 
+          matchingfiles+=("$inputfile")
+       fi   
+    done
+
+    if [[ "$quiet" == "true" ]]
+    then 
+        # replace words directly without confirmation
+        for inputfile in "${matchingfiles[@]}"; do
+            echo "Processing: $inputfile" 1>&2
+            perl -pi -e "my \$line=\$_;my \$match=quotemeta('$match');my \$replacement='$replacement'; \$line =~  s/\$match/\$replacement/g;\$_=\$line;" "$inputfile"
+        done 
+    else
+        # ask confirmation for each file after showing the changes which will be applied
+        for inputfile in "${matchingfiles[@]}"; do
+            # Process each line
+            printf "\n\nProcessing: $inputfile\n------------------------------------------------------\n"
+            #perl -n -e "my \$line=\$_;my \$match=quotemeta('$match');my \$replacement='$replacement'; if ( \$line =~  m/\$match/ ) { \$modline=\$line; \$modline =~  s/\$match/\$replacement/g; print qq($inputfile:\$.:\n<\$line>\$modline\n); }" "$inputfile"
+            perl -n -e "my \$line=\$_;my \$match=quotemeta('$match');my \$replacement='$replacement'; if ( \$line =~  m/\$match/ ) { \$modline=\$line; \$modline =~  s/\$match/\$replacement/g; print qq($inputfile:\$.:<\$line$inputfile:\$.:>\$modline); }" "$inputfile"
+            printf "\n"
+            read -p 'replace(y/n)? ' replace  </dev/tty
+            if [[ $replace == "y" ]] 
+            then
+                perl -pi -e "my \$line=\$_;my \$match=quotemeta('$match');my \$replacement='$replacement'; \$line =~  s/\$match/\$replacement/g;\$_=\$line;" "$inputfile"
+            fi
+        done
+    fi    
+}
+
+rw "$@"

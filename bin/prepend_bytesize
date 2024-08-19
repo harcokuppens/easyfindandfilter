@@ -1,0 +1,16 @@
+#!/usr/bin/env bash
+
+script_dir=$(dirname $0)
+source "$script_dir/lib/lib.bash" || exit 1
+
+prepend_bytesize() {
+
+    if [[ -t 0 ]]; then
+        printf "ERROR: filepaths must be piped in, one filepath per line! \n" 1>&2
+        exit 1
+    fi
+    nl2null | xargs -0 -P0   -I @ du -b -- "@" 
+
+}
+
+prepend_bytesize "$@"

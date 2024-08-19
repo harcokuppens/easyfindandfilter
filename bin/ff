@@ -1,0 +1,45 @@
+#!/usr/bin/env bash
+
+script_dir=$(dirname $0)
+source "$script_dir/lib/lib.bash" || exit 1
+
+
+# find file paths/names
+ff() {
+    local args=("$@")
+    # https://stackoverflow.com/questions/10806357/associative-arrays-are-local-by-default
+    declare -A options=() 
+    fetch_options args options || exit 1
+    numargs=${#args[@]}
+    if  [[  "${options[help]}" == "true" || "$numargs" -gt "2"  ]]
+    then
+        printf "usage: ff [-n|--dry-run] [-f|--no-index] [--dir|-d DIR] [--min NUMDAYS] [--max NUMDAYS] [--grepcontent WORD] [WORD] [EXT]\n"
+        printf "note: when only one positional argument is given which starts with '.' then extension matching is done. (end of word matching)\n"
+        printf "For more info: help_find\n"
+        return 0
+    fi
+
+   
+    
+    if [[  "$numargs" -eq "2"  ]]
+    then
+        options+=( ["grepfilename"]="${args[0]}" )
+        options+=( ["ext"]="${args[1]}" )
+    else 
+        if [[  "$numargs" -eq "1"  ]]
+        then    
+            # if single arg starts with '.' then take it as extension
+            if [[ "${args[0]}" =~ ^\..* ]]
+            then
+                options+=( ["ext"]="${args[0]}" )
+            else
+                options+=( ["grepfilename"]="${args[0]}" )
+            fi    
+        fi
+
+
+    fi    
+    _find_base options
+}
+
+ff "$@"

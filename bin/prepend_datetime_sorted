@@ -1,0 +1,28 @@
+#!/usr/bin/env bash
+
+script_dir=$(dirname $0)
+source "$script_dir/lib/lib.bash" || exit 1
+
+# display filepaths  sorted on time and prepended with time
+prepend_datetime_sorted() {
+    if [[ -t 0 ]]; then
+        printf "ERROR: filepaths must be piped in, one filepath per line! \n" 1>&2
+        exit 1
+    fi
+    defaultsort="-r"
+    ARR=("$@")
+    for index in "${!ARR[@]}" 
+    do 
+       if [[ "${ARR[$index]}" == "-r" ]] 
+       then 
+           defaultsort=""
+           # remove -r from args
+           unset -v 'ARR[$index]' 
+       fi
+    done
+     
+    prepend_datetime | sort $defaultsort "${ARR[@]}"
+
+}
+
+prepend_datetime_sorted "$@"

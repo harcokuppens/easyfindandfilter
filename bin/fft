@@ -1,0 +1,27 @@
+#!/usr/bin/env bash
+
+script_dir=$(dirname $0)
+source "$script_dir/lib/lib.bash" || exit 1
+
+fft() {
+    local args=("$@")
+    # https://stackoverflow.com/questions/10806357/associative-arrays-are-local-by-default
+    declare -A options=() 
+    fetch_options args options || exit 1
+    numargs=${#args[@]}
+    if  [[  "${options[help]}" == "true" || "$numargs" -gt "1"  ]]
+    then
+        printf "usage: fft [-n|--dry-run] [-f|--no-index] [--dir|-d DIR] [--min NUMDAYS] [--max NUMDAYS] [--grepcontent WORD] [WORD]\n"
+        printf "For more info: help_find\n"
+        exit 0
+    fi
+    if [[  "$numargs" -eq "1"  ]]
+    then
+        options+=( ["grepfilename"]="${args[0]}" )
+    fi    
+    options+=( ["ext"]=".txt" )
+    
+    _find_base options
+}
+
+fft "$@"

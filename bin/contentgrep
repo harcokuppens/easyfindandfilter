@@ -1,0 +1,30 @@
+#!/usr/bin/env bash
+
+script_dir=$(dirname $0)
+source "$script_dir/lib/lib.bash" || exit 1
+
+# display grep results of grepping in the files for a word
+contentgrep() {
+
+    if [[ -t 0 ]]; then
+        printf "ERROR: filepaths must be piped in, one filepath per line! \n" 1>&2
+        exit 1
+    fi
+
+    option=""
+    if [[ "$1" == "-i" ]]
+    then 
+      option="-i"
+      shift
+    fi  
+
+    nl2null | xargs -0  -P0 /usr/bin/grep $option -s -Hn -- "$@"
+
+    # -H      Always print filename headers with output lines.
+    # -n, --line-number
+    #         Each output line is preceded by its relative line number in the file, starting at line 1.  The line number counter is reset for each file processed.  This option is ignored if -c, -L, -l, or -q is specified.
+    # -s, --no-messages
+    #         Silent mode.  Nonexistent and unreadable files are ignored (i.e., their error messages are suppressed).
+}
+
+contentgrep "$@"

@@ -1,0 +1,27 @@
+#!/usr/bin/env bash
+
+script_dir=$(dirname $0)
+source "$script_dir/lib/lib.bash" || exit 1
+
+
+fwt() {
+    local args=("$@")
+    # https://stackoverflow.com/questions/10806357/associative-arrays-are-local-by-default
+    declare -A options=() 
+    fetch_options args options || exit 1
+    
+    local numargs=${#args[@]}
+    if  [[  "${options[help]}" == "true" || "$numargs" -ne "1"  ]]
+    then
+        printf "usage: fwt [-n|--dry-run] [-f|--no-index] [--dir|-d DIR] [--min NUMDAYS] [--max NUMDAYS] [--grepfilename WORD] WORD\n"
+        printf "For more info: help_find\n"
+        exit 0
+    fi
+
+    options+=( ["grepcontent"]="${args[0]}" )
+    options+=( ["ext"]=".txt" )
+    
+    _find_base options
+}
+
+fwt "$@"

@@ -1,0 +1,23 @@
+#!/usr/bin/env bash
+
+script_dir=$(dirname $0)
+source "$script_dir/lib/lib.bash" || exit 1
+
+
+findbase() {
+    local args=("$@")
+    # https://stackoverflow.com/questions/10806357/associative-arrays-are-local-by-default
+    declare -A options=() 
+    fetch_options args options || exit 1 
+    numargs=${#args[@]}
+    if  [[  "${options[help]}" == "true" || "$numargs" -ne "0" || "${#options[@]}" -eq "0"  ]]
+    then
+        printf "usage: findbase [-n|--dry-run] [-f|--no-index] [--dir|-d DIR] [--min NUMDAYS] [--max NUMDAYS] [--grepfilename WORD] [--ext EXT] [--grepcontent WORD] [--index BOOL]\n"
+        printf "For more info: help_find\n"
+        exit 0    
+    fi
+   
+     _find_base options
+}
+
+findbase "$@"
