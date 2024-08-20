@@ -98,25 +98,25 @@ OPTIONS
     --grepcontent WORD
         search for files containing WORD in content
 
-
 DERIVED FIND COMMANDS
 
-  -> all commands  can use same options as in findbase 
-      but positional params in them overrule the corresponding option param
+  All derived commands  can use same options as in findbase 
+  but positional params in them overrule the corresponding option param
 
-  ff [WORD] [EXT] : find files with WORD in filepath in PWD recursively
-    -> if EXT is missing and WORD starts with . , then it is used as extension
+    ff [WORD] [EXT] : find files with WORD in filepath in PWD recursively.
+                      If EXT is missing and WORD starts with '.', then it is 
+                      used as an extension instead.
 
-  fft [WORD]    : find text files with WORD in filepath in PWD recursively
-                  note: same as  'ff [WORD] .txt' where WORD is optional 
+    fft [WORD]    : find text files with WORD in filepath in PWD recursively
+                    note: same as  'ff [WORD] .txt' where WORD is optional 
 
-  fd  [WORD]    : find directories with WORD in filepath in PWD recursively
+    fd  [WORD]    : find directories with WORD in filepath in PWD recursively
 
-  fw WORD [EXT] : find word in files, that is files containing word, in PWD recursively
-  fwt WORD      : find word in text files, that is text files containing word, in PWD recursively
-                  note: same as  'fwt WORD .txt' 
+    fw WORD [EXT] : find word in files, that is files containing word, in PWD recursively
+    fwt WORD      : find word in text files, that is text files containing word, in PWD recursively
+                    note: same as  'fwt WORD .txt' 
 
-  => for searching specific dir just use --dir option, default is cwd 
+  For searching a specific dir just use --dir option, default is cwd. 
 
 FILTER COMMANDS
     
@@ -130,6 +130,14 @@ OUTPUT COMMANDS
 
     Using the option '-r' below we revert the sort order.
 
+      - show [-i] [-c N] WORD : 
+                          Matching word in file's contents and show N lines of context of match.
+                          Using the option '-i' below we can match show WORD case insensitive.
+
+      - rw [-y] MATCH REPLACEMENT : 
+                          Replace each MATCH with REPLACEMENT in file's contents.
+                          Per file asks user confirmation unless -y option is supplied.
+
       - timed     [-r]   : sort on datetime and add datetime prefix.
       - sized     [-r]   : sort on size and add size prefix (1k = 1024, 1m = 1048576, 1g =1073741824) 
       - bytesized [-r]   : sort on size and add size prefix in bytes 
@@ -141,12 +149,16 @@ OUTPUT COMMANDS
       - prepend_size     : only add size prefix
       - prepend_bytesize : only add bytesize prefix
 
-      - show [-i] [-c N] WORD : 
-                          Matching word in file's contents and show N lines of context of match.
-                          Using the option '-i' below we can match show WORD case insensitive.
-      - rw [-y] MATCH REPLACEMENT : 
-                          Replace each MATCH with REPLACEMENT in file's contents.
-                          Per file asks user confirmation unless -y option is supplied.
+SPECIAL CONVENIENT COMMANDS 
+
+    - for searching in folder set by EASYFINDDIR environment variable, which by default
+      is set to your documents folder, we have convenient commands with d appended: 
+        
+          ffd,fftd,fdd,fwd,fwd,fwtd
+  
+    - finding text files changed in last 100 days:   
+      
+          fl (current dir), fld (in EASYFINDDIR)
 
 EXAMPLES
  
@@ -173,20 +185,12 @@ EXAMPLES
     show context of matches (sorted on time)     
       fft --min 3 --max 10 | contains container | timesort | show container
   
-    find all bin directories in EASYFINDDIR (see convenient commands below)
+    find all bin directories in EASYFINDDIR 
        fdd bin -x | grep '/bin$'
        # note: last grep is needed to match dirname exactly 
 
-SPECIAL CONVENIENT COMMANDS 
-
-    - for searching in folder set by EASYFINDDIR environment variable, which by default
-      is set to your documents folder, we have convenient commands with d appended: 
-        
-          ffd,fftd,fdd,fwd,fwd,fwtd
-  
-    - finding text files changed in last 100 days:   
-      
-          fl (current dir), fld (in EASYFINDDIR)
+    find textfiles and replace 'Marco' with 'Harco' where you to confirm each replacement
+       fft | rw 'Marco' 'Harco' 
 
 "
 

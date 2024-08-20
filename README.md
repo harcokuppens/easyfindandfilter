@@ -20,12 +20,12 @@ To use these commands read the documentation in the `help_find` command:
             FIND_CMD | FILTER_CMD_1  | FILTER_CMD_2 | ... | OUTPUT_CMD
 
       By default searching is done using the 'find' command, however providing the '-x' option we
-      can speed up searching using an indexed searching tool.   
+      can speed up searching using an indexed searching tool.
       Results of indexed search are always absolute paths, whereas when using find we get relative paths.
       When using indexed search we can only search locations which are indexed. For example, hidden folders
       starting with '.' are not indexed. So when searching with 'find' command hidden folders are searched
       but not with indexed search.
-  
+      
       To see the actual command run you can use the '-n' or '--dry-run' option.
 
     All find command commands are based on a base command:
@@ -35,7 +35,7 @@ To use these commands read the documentation in the `help_find` command:
                 [--grepfilename WORD] [--ext EXT] [--grepcontent WORD]
 
     OPTIONS
-    
+        
         -i 
             search case insensitive. Default search is case sensitive.
             Note that when using indexed search using recoll on linux the search is 
@@ -69,7 +69,7 @@ To use these commands read the documentation in the `help_find` command:
 
         --maxsize SIZE 
             search for files which have size SIZE or smaller
-        
+            
         --grepfilename WORD
             search for files containing WORD in filename 
 
@@ -79,28 +79,28 @@ To use these commands read the documentation in the `help_find` command:
         --grepcontent WORD
             search for files containing WORD in content
 
-
     DERIVED FIND COMMANDS
 
-      -> all commands  can use same options as in findbase 
-          but positional params in them overrule the corresponding option param
+      All derived commands  can use same options as in findbase 
+      but positional params in them overrule the corresponding option param
 
-      ff [WORD] [EXT] : find files with WORD in filepath in PWD recursively
-        -> if EXT is missing and WORD starts with . , then it is used as extension
+        ff [WORD] [EXT] : find files with WORD in filepath in PWD recursively.
+                          If EXT is missing and WORD starts with '.', then it is 
+                          used as an extension instead.
 
-      fft [WORD]    : find text files with WORD in filepath in PWD recursively
-                      note: same as  'ff [WORD] .txt' where WORD is optional 
+        fft [WORD]    : find text files with WORD in filepath in PWD recursively
+                        note: same as  'ff [WORD] .txt' where WORD is optional 
 
-      fd  [WORD]    : find directories with WORD in filepath in PWD recursively
+        fd  [WORD]    : find directories with WORD in filepath in PWD recursively
 
-      fw WORD [EXT] : find word in files, that is files containing word, in PWD recursively
-      fwt WORD      : find word in text files, that is text files containing word, in PWD recursively
-                      note: same as  'fwt WORD .txt' 
+        fw WORD [EXT] : find word in files, that is files containing word, in PWD recursively
+        fwt WORD      : find word in text files, that is text files containing word, in PWD recursively
+                        note: same as  'fwt WORD .txt' 
 
-      => for searching specific dir just use --dir option, default is cwd 
+      For searching a specific dir just use --dir option, default is cwd. 
 
     FILTER COMMANDS
-    
+        
         Using the option '-i' below we can filter case insensitive.
 
         - grep     [-i] : filters on matching filepath (the standard 'grep' command)
@@ -111,20 +111,38 @@ To use these commands read the documentation in the `help_find` command:
 
         Using the option '-r' below we revert the sort order.
 
-          - timed     [-r]   : sort on datetime and add datetime prefix.
-          - sized     [-r]   : sort on size and add size prefix (1K = 1024, 1M = 1048576, ...) 
-          - bytesized [-r]   : sort on size and add size prefix in bytes 
-          - timesort  [-r]   : only sort on datetime
-          - sizesort  [-r]   : only sort on size 
           - show [-i] [-c N] WORD : 
                               Matching word in file's contents and show N lines of context of match.
                               Using the option '-i' below we can match show WORD case insensitive.
+
           - rw [-y] MATCH REPLACEMENT : 
                               Replace each MATCH with REPLACEMENT in file's contents.
                               Per file asks user confirmation unless -y option is supplied.
 
+          - timed     [-r]   : sort on datetime and add datetime prefix.
+          - sized     [-r]   : sort on size and add size prefix (1k = 1024, 1m = 1048576, 1g =1073741824) 
+          - bytesized [-r]   : sort on size and add size prefix in bytes 
+          
+          - timesort  [-r]   : only sort on datetime
+          - sizesort  [-r]   : only sort on size 
+
+          - prepend_datetime : only add datetime prefix 
+          - prepend_size     : only add size prefix
+          - prepend_bytesize : only add bytesize prefix
+
+    SPECIAL CONVENIENT COMMANDS 
+
+        - for searching in folder set by EASYFINDDIR environment variable, which by default
+          is set to your documents folder, we have convenient commands with d appended: 
+            
+              ffd,fftd,fdd,fwd,fwd,fwtd
+      
+        - finding text files changed in last 100 days:   
+          
+              fl (current dir), fld (in EASYFINDDIR)
+
     EXAMPLES
- 
+    
         find text files matching 'help' in dayrange 3-10 old
           fft --min 3 --max 10 help | timed
 
@@ -133,7 +151,7 @@ To use these commands read the documentation in the `help_find` command:
 
         find all text files containing rdesk in ~/doc
           fw --dir ~/doc rdesk .txt
-    
+        
         combined with contains
           fft --min 3 --max 10     | contains container | timed
           ff --min 3 --max 10 .txt | contains container | timed
@@ -147,14 +165,12 @@ To use these commands read the documentation in the `help_find` command:
 
         show context of matches (sorted on time)     
           fft --min 3 --max 10 | contains container | timesort | show container
-  
+      
+        find all bin directories in EASYFINDDIR 
+          fdd bin -x | grep '/bin$'
+          # note: last grep is needed to match dirname exactly 
 
+        find textfiles and replace 'Marco' with 'Harco' where you to confirm each replacement
+          fft | rw 'Marco' 'Harco' 
 
-    SPECIAL CONVENIENT COMMANDS 
-
-        - for searching in documents folder we have aliases with d appended: 
-          ffd,fftd,fdd,fwd,fwd,fwtd
-  
-        - finding text files changed in last 100 days:   
-          fl (current dir), fld (in documents dir)
-
+          
