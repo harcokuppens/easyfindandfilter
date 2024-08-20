@@ -107,6 +107,9 @@ To use these commands read the documentation in the `help_find` command:
         - grepname [-i] : filters on matching filename
         - contains [-i] : filters on matching word in file's contents
 
+        - timesort  [-r]   : sort on datetime
+        - sizesort  [-r]   : sort on size 
+
     OUTPUT COMMANDS 
 
         Using the option '-r' below we revert the sort order.
@@ -123,9 +126,6 @@ To use these commands read the documentation in the `help_find` command:
           - sized     [-r]   : sort on size and add size prefix (1k = 1024, 1m = 1048576, 1g =1073741824) 
           - bytesized [-r]   : sort on size and add size prefix in bytes 
           
-          - timesort  [-r]   : only sort on datetime
-          - sizesort  [-r]   : only sort on size 
-
           - prepend_datetime : only add datetime prefix 
           - prepend_size     : only add size prefix
           - prepend_bytesize : only add bytesize prefix
