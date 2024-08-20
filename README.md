@@ -28,9 +28,11 @@ To use these commands read the documentation in the `help_find` command:
       
       To see the actual command run you can use the '-n' or '--dry-run' option.
 
-    All find command commands are based on a base command:
+    BASE COMMAND  
 
-      findbase [-i] [-n|--dry-run] [-x|--index] [--dir|-d DIR] [--dir-only] 
+      All find command commands are based on a base command:
+
+          findbase [-i] [-n|--dry-run] [-x|--index] [--dir|-d DIR] [--dir-only] 
                 [--min NUMDAYS] [--max NUMDAYS] [--minsize SIZE] [--maxsize SIZE]
                 [--grepfilename WORD] [--ext EXT] [--grepcontent WORD]
 
@@ -106,13 +108,13 @@ To use these commands read the documentation in the `help_find` command:
         - grep     [-i] : filters on matching filepath (the standard 'grep' command)
         - grepname [-i] : filters on matching filename
         - contains [-i] : filters on matching word in file's contents
+          
+        Using the option '-r' below we revert the sort order.
 
         - timesort  [-r]   : sort on datetime
         - sizesort  [-r]   : sort on size 
 
     OUTPUT COMMANDS 
-
-        Using the option '-r' below we revert the sort order.
 
           - show [-i] [-c N] WORD : 
                               Matching word in file's contents and show N lines of context of match.
@@ -121,6 +123,8 @@ To use these commands read the documentation in the `help_find` command:
           - rw [-y] MATCH REPLACEMENT : 
                               Replace each MATCH with REPLACEMENT in file's contents.
                               Per file asks user confirmation unless -y option is supplied.
+
+        Using the option '-r' below we revert the sort order.
 
           - timed     [-r]   : sort on datetime and add datetime prefix.
           - sized     [-r]   : sort on size and add size prefix (1k = 1024, 1m = 1048576, 1g =1073741824) 
@@ -151,7 +155,11 @@ To use these commands read the documentation in the `help_find` command:
 
         find all text files containing rdesk in ~/doc
           fw --dir ~/doc rdesk .txt
-        
+      
+        find all files bigger then 100MB in your documents
+        where we use indexed search to speed up the search
+          ffd -x --minsize 100m 
+
         combined with contains
           fft --min 3 --max 10     | contains container | timed
           ff --min 3 --max 10 .txt | contains container | timed
@@ -170,7 +178,7 @@ To use these commands read the documentation in the `help_find` command:
           fdd bin -x | grep '/bin$'
           # note: last grep is needed to match dirname exactly 
 
-        find textfiles and replace 'Marco' with 'Harco' where you to confirm each replacement
+        replace 'Marco' with 'Harco' in selected textfiles where you to confirm each replacement
           fft | rw 'Marco' 'Harco' 
 
-          
+    
