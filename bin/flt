@@ -1,4 +1,4 @@
 #!/usr/bin/env bash
 
 # find text files last 100 days
-ff --max 100 "$@" |timed |less
+fft --max 100 "$@" |timed |less

@@ -160,9 +160,10 @@ SPECIAL CONVENIENT COMMANDS
         
           ffd,fftd,fdd,fwd,fwd,fwtd
   
-    - finding text files changed in last 100 days:   
+    - finding files changed in last 100 days:   
       
           fl (current dir), fld (in EASYFINDDIR)
+          flt, fltd (for textfiles specific)
 
 EXAMPLES
  
