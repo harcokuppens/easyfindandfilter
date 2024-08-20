@@ -2,8 +2,23 @@
 
 Make finding files and words in files easier using simple specialised find and filtering commands using pipelines with optionally using an optimised search using your platforms desktop search index.
 
+## Installation
 
-To use these commands read the documentation in the `help_find` command:
+To install these commands just clone the repository and put its `bin/` folder in your `PATH`.
+
+    cd $INSTALLDIR
+    git clone https://github.com/harcokuppens/easyfindandfilter.git
+    
+    export PATH="$INSTALLDIR/easyfindandfilter/bin/:$PATH"
+    # add above line to your shell's config file
+
+
+
+## Usage
+
+The usage message of the commands can be displayed with the `-h` or `--help` option. 
+
+Explanation of how to use these commands can be read in the documentation given by the `help_find` command:
 
 
     $ help_find
