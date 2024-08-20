@@ -3,7 +3,7 @@
 script_dir=$(dirname $0)
 source "$script_dir/lib/lib.bash" || exit 1
 
-
+# grep in filename of filepath and not in directory path
 grepname() {
     option=""
     if [[ "$1" == "-i" ]]
@@ -12,7 +12,7 @@ grepname() {
       shift
     fi  
     name="$1"
-    /usr/bin/grep $option "$name[^/]*$"
+    /usr/bin/grep $option "${name}[^/]*$"
 }
 
 grepname "$@"

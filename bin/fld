@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+
+# find text files last 100 days in EASYFINDDIR
+fftd --max 100  "$@" |timed |less

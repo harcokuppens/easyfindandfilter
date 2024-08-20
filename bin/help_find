@@ -131,10 +131,16 @@ OUTPUT COMMANDS
     Using the option '-r' below we revert the sort order.
 
       - timed     [-r]   : sort on datetime and add datetime prefix.
-      - sized     [-r]   : sort on size and add size prefix (1K = 1024, 1M = 1048576, ...) 
+      - sized     [-r]   : sort on size and add size prefix (1k = 1024, 1m = 1048576, 1g =1073741824) 
       - bytesized [-r]   : sort on size and add size prefix in bytes 
+      
       - timesort  [-r]   : only sort on datetime
       - sizesort  [-r]   : only sort on size 
+
+      - prepend_datetime : only add datetime prefix 
+      - prepend_size     : only add size prefix
+      - prepend_bytesize : only add bytesize prefix
+
       - show [-i] [-c N] WORD : 
                           Matching word in file's contents and show N lines of context of match.
                           Using the option '-i' below we can match show WORD case insensitive.
@@ -167,15 +173,20 @@ EXAMPLES
     show context of matches (sorted on time)     
       fft --min 3 --max 10 | contains container | timesort | show container
   
-
+    find all bin directories in EASYFINDDIR (see convenient commands below)
+       fdd bin -x | grep '/bin$'
+       # note: last grep is needed to match dirname exactly 
 
 SPECIAL CONVENIENT COMMANDS 
 
-    - for searching in documents folder we have aliases with d appended: 
-      ffd,fftd,fdd,fwd,fwd,fwtd
+    - for searching in folder set by EASYFINDDIR environment variable, which by default
+      is set to your documents folder, we have convenient commands with d appended: 
+        
+          ffd,fftd,fdd,fwd,fwd,fwtd
   
     - finding text files changed in last 100 days:   
-      fl (current dir), fld (in documents dir)
+      
+          fl (current dir), fld (in EASYFINDDIR)
 
 "
 

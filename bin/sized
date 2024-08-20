@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+
+# print bytes human sized with numfmt (works by default only on first field)
+bytesized "$@" | numfmt -d$'\t' --to=iec

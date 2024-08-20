@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+
+EASYFINDDIR="${EASYFINDDIR:-$HOME/Documents}"
+
+fwtd --dir "$EASYFINDDIR" "$@"

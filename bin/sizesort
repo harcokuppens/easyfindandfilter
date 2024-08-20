@@ -1,0 +1,3 @@
+#!/usr/bin/env bash
+
+bytesized "$@" | cut -f 2-
