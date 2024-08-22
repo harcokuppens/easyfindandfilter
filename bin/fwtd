@@ -2,4 +2,4 @@
 
 EASYFINDDIR="${EASYFINDDIR:-$HOME/Documents}"
 
-fwtd --dir "$EASYFINDDIR" "$@"
+fwt --dir "$EASYFINDDIR" "$@"
