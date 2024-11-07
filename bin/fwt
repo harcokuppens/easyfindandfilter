@@ -13,7 +13,7 @@ fwt() {
     local numargs=${#args[@]}
     if  [[  "${options[help]}" == "true" || "$numargs" -ne "1"  ]]
     then
-        printf "usage: fwt [-n|--dry-run] [-f|--no-index] [--dir|-d DIR] [--min NUMDAYS] [--max NUMDAYS] [--grepfilename WORD] WORD\n"
+        printf "usage: fwt [-n|--dry-run] [-x|--index] [--dir|-d DIR] [--min NUMDAYS] [--max NUMDAYS] [--grepfilename WORD] WORD\n"
         printf "For more info: help_find\n"
         exit 0
     fi

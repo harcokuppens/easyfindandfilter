@@ -12,7 +12,7 @@ findbase() {
     numargs=${#args[@]}
     if  [[  "${options[help]}" == "true" || "$numargs" -ne "0" || "${#options[@]}" -eq "0"  ]]
     then
-        printf "usage: findbase [-n|--dry-run] [-f|--no-index] [--dir|-d DIR] [--min NUMDAYS] [--max NUMDAYS] [--grepfilename WORD] [--ext EXT] [--grepcontent WORD] [--index BOOL]\n"
+        printf "usage: findbase [-n|--dry-run] [-x|--index] [--dir|-d DIR] [--min NUMDAYS] [--max NUMDAYS] [--grepfilename WORD] [--ext EXT] [--grepcontent WORD]\n"
         printf "For more info: help_find\n"
         exit 0    
     fi

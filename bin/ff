@@ -13,7 +13,7 @@ ff() {
     numargs=${#args[@]}
     if  [[  "${options[help]}" == "true" || "$numargs" -gt "2"  ]]
     then
-        printf "usage: ff [-n|--dry-run] [-f|--no-index] [--dir|-d DIR] [--min NUMDAYS] [--max NUMDAYS] [--grepcontent WORD] [WORD] [EXT]\n"
+        printf "usage: ff [-n|--dry-run] [-x|--index] [--dir|-d DIR] [--min NUMDAYS] [--max NUMDAYS] [--grepcontent WORD] [WORD] [EXT]\n"
         printf "note: when only one positional argument is given which starts with '.' then extension matching is done. (end of word matching)\n"
         printf "For more info: help_find\n"
         return 0

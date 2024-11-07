@@ -159,14 +159,14 @@ fetch_options() {
             ref_options+=( ["dry-run"]="true" )
             continue
         fi       
-        if [[ "$arg" == "-f" || "$arg" == "--no-index" ]]
-        then 
-            unset "arr[$i]"
-            i=$((i+1))
-            # store 
-            ref_options+=( ["index"]="false" )
-            continue
-        fi              
+#        if [[ "$arg" == "-f" || "$arg" == "--no-index" ]]
+#        then 
+#            unset "arr[$i]"
+#            i=$((i+1))
+#            # store 
+#            ref_options+=( ["index"]="false" )
+#            continue
+#        fi              
         if [[ "$arg" == "--dir-only" ]]
         then 
             unset "arr[$i]"

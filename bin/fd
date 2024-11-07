@@ -13,7 +13,7 @@ fd() {
     local numargs=${#args[@]}
     if  [[  "${options[help]}" == "true" || "$numargs" -gt "1" ]]
     then
-        printf "usage: fd [-n|--dry-run] [-f|--no-index] [--dir|-d DIR] [--min NUMDAYS] [--max NUMDAYS] [WORD]\n"
+        printf "usage: fd [-n|--dry-run] [-x|--index] [--dir|-d DIR] [--min NUMDAYS] [--max NUMDAYS] [WORD]\n"
         printf "For more info: help_find\n"
         exit 0
     fi

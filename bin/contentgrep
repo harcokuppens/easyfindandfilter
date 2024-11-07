@@ -6,20 +6,44 @@ source "$script_dir/lib/lib.bash" || exit 1
 # display grep results of grepping in the files for a word
 contentgrep() {
 
+    local usage="usage: contentgrep [-h] [-C NUMBER] [-i] PATTERN"
     if [[ -t 0 ]]; then
         printf "ERROR: filepaths must be piped in, one filepath per line! \n" 1>&2
+        echo "$usage" 1>&2
         exit 1
     fi
 
-    option=""
-    if [[ "$1" == "-i" ]]
-    then 
-      option="-i"
-      shift
-    fi  
+    caseoption=""
+    contextoptions=()
+    while [[ ${1:0:1} == "-" ]];
+    do 
+        if [[ "$1" == "-i" ]]
+        then 
+          caseoption="-i"
+          shift
+        elif [[ "$1" == "-C" ]]
+        then 
+          contextoptions=( "-C" "$2" )
+          shift 2
+        elif [[ "$1" == "-h" ]]
+        then 
+          echo "$usage"
+          exit 0  
+        else
+          break  
+        fi  
+    done
 
-    nl2null | xargs -0  -P0 /usr/bin/grep $option -s -Hn -- "$@"
+    if [[ "$#" == "0" ]]
+    then
+        printf "contentgrep:ERROR: missing pattern! \n" 1>&2
+        echo "$usage" 1>&2
+        exit 1
+    fi    
 
+    nl2null | xargs -0  -P0 /usr/bin/grep $caseoption "${contextoptions[@]}" -s -Hn -- "$@"
+
+    # -C num, --context=num   Print num lines of leading and trailing context surrounding each match.  See also the -A and -B options.
     # -H      Always print filename headers with output lines.
     # -n, --line-number
     #         Each output line is preceded by its relative line number in the file, starting at line 1.  The line number counter is reset for each file processed.  This option is ignored if -c, -L, -l, or -q is specified.
