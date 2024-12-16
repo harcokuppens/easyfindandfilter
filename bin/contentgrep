@@ -30,7 +30,9 @@ contentgrep() {
           echo "$usage"
           exit 0  
         else
-          break  
+          printf "contentgrep:ERROR: unknown option '$1'\n" 1>&2
+          echo "$usage" 1>&2
+          exit 1
         fi  
     done
 

@@ -414,9 +414,11 @@ _command_find_base() {
         findtype="f"
     fi      
 
+    contains_opts=()
     if [[ "$caseinsens"  == "true"  ]] 
     then 
         findname="iname" 
+        contains_opts+=("-i")
     else
         findname="name"
     fi   
@@ -435,7 +437,12 @@ _command_find_base() {
 
     if [[ -n "$grepcontent" ]] 
     then 
-       $precmd find "$dir"  -type $findtype "${namequery[@]}" "${sizequery[@]}"  "${timequery[@]}" -printf "%p\n" 2>/dev/null | contains  "$grepcontent"
+       if [[ "$dryrun"  == "true"  ]]
+       then
+          $precmd find "$dir"  -type $findtype "${namequery[@]}" "${sizequery[@]}"  "${timequery[@]}" -printf "%p\n" 2\>/dev/null \| contains "${contains_opts[@]}" "$grepcontent"
+       else
+          find "$dir"  -type $findtype "${namequery[@]}" "${sizequery[@]}"  "${timequery[@]}" -printf "%p\n" 2>/dev/null | contains "${contains_opts[@]}" "$grepcontent"
+       fi
     else
        $precmd find "$dir"   -type $findtype "${namequery[@]}" "${sizequery[@]}" "${timequery[@]}" -printf "%p\n" 2>/dev/null
     fi   
@@ -570,14 +577,16 @@ if [[ "$OSTYPE" == "linux-gnu" ]]; then
 
         if [[ "$dryrun"  == "true"  ]]
         then
-            precmd="echo"
             printf "options used:\n"
             print_array indexfindoptions
-        else
-            precmd=""
         fi
 
-        $precmd recoll -t -b "$withindirexpr" $sizequery $timequery $grepfilenamequery $extquery $grepcontentquery $typeexpr   2>/dev/null | sed -e 's/^file:\/\///'
+        if [[ "$dryrun"  == "true"  ]]
+        then 
+           echo recoll -t -b "$withindirexpr" $sizequery $timequery $grepfilenamequery $extquery $grepcontentquery $typeexpr   2>/dev/null \| sed -e 's/^file:\/\///'
+        else   
+           recoll -t -b "$withindirexpr" $sizequery $timequery $grepfilenamequery $extquery $grepcontentquery $typeexpr   2>/dev/null | sed -e 's/^file:\/\///'
+        fi   
      }
 fi
 
