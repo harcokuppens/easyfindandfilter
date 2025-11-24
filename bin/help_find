@@ -207,7 +207,10 @@ EXAMPLES
        fft | rw 'Marco' 'Harco' 
 
     find all .dot file in file hierarchy and only print there basename using xargs
+       # using explicit argument variable 'dotfile' 
        ff .dot | xargs -I dotfile  basename dotfile
+       # or using implicit argument by limiting it to 1 argument per command
+       ff .dot | xargs -n 1  basename
      
 "
 
