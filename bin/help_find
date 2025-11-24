@@ -133,6 +133,11 @@ FILTER COMMANDS
     - timesort  [-r]   : sort on datetime
     - sizesort  [-r]   : sort on size 
 
+
+PROCESS FURTHER WITH XARGS
+
+      xargs -I myarg COMMAND myarg
+
 OUTPUT COMMANDS 
 
       - show [-i] [-c N] WORD : 
@@ -201,6 +206,9 @@ EXAMPLES
     replace 'Marco' with 'Harco' in selected textfiles where you to confirm each replacement
        fft | rw 'Marco' 'Harco' 
 
+    find all .dot file in file hierarchy and only print there basename using xargs
+       ff .dot | xargs -I dotfile  basename dotfile
+     
 "
 
    
