@@ -138,6 +138,13 @@ PROCESS FURTHER WITH XARGS
 
       xargs -I myarg COMMAND myarg
 
+   Even better use the more advanced 'parallel' command instead of xargs.
+   You may need to install it first, because not always by default installed.
+
+      parallel -I myarg COMMAND myarg
+
+   See the examples below for more advanced usage of parallels which xargs cannot do.
+    
 OUTPUT COMMANDS 
 
       - show [-i] [-c N] WORD : 
