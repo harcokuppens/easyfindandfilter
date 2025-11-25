@@ -218,7 +218,29 @@ EXAMPLES
        ff .dot | xargs -I dotfile  basename dotfile
        # or using implicit argument by limiting it to 1 argument per command
        ff .dot | xargs -n 1  basename
-     
+
+    count words in parallel
+       $ # using --pipe option the parallel command distributes input over set of jobs 
+           running wc in parallel 
+       $ seq 1000000 | parallel --pipe wc -w
+       149796
+       149796
+       149796
+       149796
+       165668
+       149796
+       85352 
+
+       $ # combine results with + using paste command
+       $ seq 1000000 | parallel --pipe wc -w  |paste -sd+
+       149796+149796+149796+165668+149796+149796+85352
+
+       $ # calculate resulting sum with bc
+       $ seq 1000000 | parallel --pipe wc -w  |paste -sd+ |bc
+       1000000
+
+
+
 "
 
    
