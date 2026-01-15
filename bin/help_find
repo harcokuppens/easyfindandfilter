@@ -213,34 +213,30 @@ EXAMPLES
     replace 'Marco' with 'Harco' in selected textfiles where you to confirm each replacement
        fft | rw 'Marco' 'Harco' 
 
-    find all .dot file in file hierarchy and only print there basename using xargs
-       # using explicit argument variable 'dotfile' 
+    count files 
+       ff .dot | wc -l 
+
+    find all .dot file in file hierarchy and only print there basename using xargs/parallel
+       # using explicit argument variable 'dotfile' or just '@' 
        ff .dot | xargs -I dotfile  basename dotfile
+       ff .dot | xargs -I @  basename @
        # or using implicit argument by limiting it to 1 argument per command
        ff .dot | xargs -n 1  basename
+       # or using the parallel tool instead of xargs which by default
+       # limits to 1 argument per command and uses multiple parallel processes
+       ff .dot | parallel basename 
 
-    count words in parallel
-       $ # using --pipe option the parallel command distributes input over set of jobs 
-           running wc in parallel 
-       $ seq 1000000 | parallel --pipe wc -w
-       149796
-       149796
-       149796
-       149796
-       165668
-       149796
-       85352 
+    get number words per found file in parallel
+       # parallel by default runs number-of-cpu jobs in parallel  
+       # with option -X values are passed as multiple arguments to the parallel
+       # running commands: 
+       ff .txt | parallel -X  wc -w
 
-       $ # combine results with + using paste command
-       $ seq 1000000 | parallel --pipe wc -w  |paste -sd+
-       149796+149796+149796+165668+149796+149796+85352
-
-       $ # calculate resulting sum with bc
-       $ seq 1000000 | parallel --pipe wc -w  |paste -sd+ |bc
-       1000000
-
-
-
+       # to see what commands parallel will run, but not running them
+       ff .txt | parallel -X  printargs wc -w  
+      
+       # parallel combines output from parallel running commands to process further
+       ff .txt | parallel -X wc -w  |sort -n | tail  # get 10 files with most words 
 "
 
    
